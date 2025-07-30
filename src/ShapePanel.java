@@ -5,11 +5,14 @@ import java.util.Random;
 
 public class ShapePanel extends JPanel {
     private final ArrayList<MyShape> shapes = new ArrayList<>();
+    private JLabel statusLabel;
 
     private Random rand = new Random();
 
-    public ShapePanel(){
+    public ShapePanel(JLabel statusLabel){
         setBackground(Color.WHITE);
+
+        this.statusLabel = statusLabel;
 
         for(int i = 0; i < 10; i++){
             int x1 = rand.nextInt(500);
