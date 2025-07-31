@@ -89,6 +89,20 @@ public class ShapeFrame extends JFrame {
             }
         });
 
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shapePanel.clearLastShape();
+            }
+        });
+
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shapePanel.clearPanel();
+            }
+        });
+
         bottomPanel.add(colorListComboBox);
         bottomPanel.add(shapeListComboBox);
 

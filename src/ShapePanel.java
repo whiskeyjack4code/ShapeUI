@@ -8,9 +8,10 @@ import java.util.Random;
 public class ShapePanel extends JPanel {
     private final ArrayList<MyShape> shapes = new ArrayList<>();
     private JLabel statusLabel;
-    private int shapeType;
     private Color shapeColor;
     private MyShape currentShape;
+
+    private int shapeType;
     private boolean shapeIsFilled;
     private int width;
     private int height;
@@ -88,6 +89,20 @@ public class ShapePanel extends JPanel {
 
         if(currentShape != null){
             currentShape.draw(g);
+        }
+    }
+
+    public void clearLastShape() {
+        if(!shapes.isEmpty()){
+            shapes.remove(shapes.size() - 1);
+            repaint();
+        }
+    }
+
+    public void clearPanel() {
+        if(!shapes.isEmpty()){
+            shapes.clear();
+            repaint();
         }
     }
 
