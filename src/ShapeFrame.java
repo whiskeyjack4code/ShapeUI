@@ -1,11 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ShapeFrame extends JFrame {
 
     private Color[] colors = {Color.BLUE, Color.RED, Color.GREEN, Color.PINK, Color.ORANGE, Color.CYAN, Color.BLACK};
     private ShapePanel shapePanel;
     private JButton undoButton, clearButton;
+    private JRadioButton isFilledRadioButton, isNotFilledRadioButton;
+    private ButtonGroup filledButtonGroup;
 
     public ShapeFrame(){
         super("Shape UI");
@@ -17,24 +21,76 @@ public class ShapeFrame extends JFrame {
 
         JLabel statusLabel = new JLabel();
         JPanel bottomPanel = new JPanel();
+
         shapePanel = new ShapePanel(statusLabel);
         undoButton = new JButton("Undo"); // Add listener later
         clearButton = new JButton("Clear"); // Add listener later
+        filledButtonGroup = new ButtonGroup();
+
+        isFilledRadioButton = new JRadioButton("Filled");
+        isNotFilledRadioButton = new JRadioButton("Not Filled");
+
+        filledButtonGroup.add(isFilledRadioButton);
+        filledButtonGroup.add(isNotFilledRadioButton);
+        isFilledRadioButton.setSelected(true);
 
         String[] colorNames = {"Blue", "Red", "Green", "Pink", "Orange", "Cyan", "Black"};
         String[] shapeNames = {"Line", "Rectangle", "Oval", "Triangle"};
 
         bottomPanel.add(undoButton);
         bottomPanel.add(clearButton);
+        bottomPanel.add(isFilledRadioButton);
+        bottomPanel.add(isNotFilledRadioButton);
 
-        JComboBox<String> colorList = new JComboBox<>(colorNames); // Add listener later
-        JComboBox<String> shapeList = new JComboBox<>(shapeNames); // Add listener later
+        JComboBox<String> colorListComboBox = new JComboBox<>(colorNames);
+        JComboBox<String> shapeListComboBox = new JComboBox<>(shapeNames);
 
-        colorList.setSelectedIndex(0);
-        shapeList.setSelectedIndex(0);
+        colorListComboBox.setSelectedIndex(0);
+        shapeListComboBox.setSelectedIndex(0);
 
-        bottomPanel.add(colorList);
-        bottomPanel.add(shapeList);
+        isFilledRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shapePanel.setIsFilled(true);
+            }
+        });
+
+        isNotFilledRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shapePanel.setIsFilled(false);
+            }
+        });
+
+        colorListComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedColorIndex = colorListComboBox.getSelectedIndex();
+                Color selectedColor;
+
+                switch (selectedColorIndex){
+                    case 0: selectedColor = Color.BLUE; break;
+                    case 1: selectedColor = Color.RED; break;
+                    case 2: selectedColor = Color.GREEN; break;
+                    case 3: selectedColor = Color.PINK; break;
+                    case 4: selectedColor = Color.ORANGE; break;
+                    case 5: selectedColor = Color.CYAN; break;
+                    case 6: selectedColor = Color.BLACK; break;
+                    default: selectedColor = Color.WHITE;
+                }
+                shapePanel.setShapeColor(selectedColor);
+            }
+        });
+        shapeListComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedShapeIndex = shapeListComboBox.getSelectedIndex();
+                shapePanel.setShapeType(selectedShapeIndex);
+            }
+        });
+
+        bottomPanel.add(colorListComboBox);
+        bottomPanel.add(shapeListComboBox);
 
         this.add(bottomPanel, BorderLayout.SOUTH);
         this.add(shapePanel, BorderLayout.CENTER);
