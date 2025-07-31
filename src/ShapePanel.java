@@ -125,12 +125,12 @@ public class ShapePanel extends JPanel {
     }
 
     public String getShapeCounts(){
-        return String.format("Lines: %d, Squares: %d, Ovals: %d, Triangles: %d,",
+        return String.format("Lines: %d, Squares: %d, Ovals: %d, Triangles: %d",
                 lineCount, squareCount, ovalCount, triangleCount);
     }
 
     private void setLabelText(int x,int y){
-        String textToShow = String.format("Mouse: (%d, %d) | %s,",
+        String textToShow = String.format("Mouse: (%d, %d) | %s",
                 x, y, getShapeCounts());
         this.statusLabel.setText(textToShow);
     }
