@@ -7,18 +7,17 @@ import java.util.Random;
 
 public class ShapePanel extends JPanel {
     private final ArrayList<MyShape> shapes = new ArrayList<>();
-    private JLabel statusLabel;
     private Color shapeColor;
     private MyShape currentShape;
+    private MouseStatusListener statusListener;
 
     private int shapeType;
     private boolean shapeIsFilled;
     private int lineCount, squareCount, ovalCount, triangleCount;
 
-    public ShapePanel(JLabel statusLabel){
+    public ShapePanel(){
         setBackground(Color.WHITE);
         setIsFilled(true);
-        this.statusLabel = statusLabel;
         this.shapeType = 0;
         this.shapeColor = Color.BLACK;
         currentShape = null;
@@ -47,7 +46,9 @@ public class ShapePanel extends JPanel {
                 default: currentShape = null;
             }
             repaint();
-            setLabelText(e.getX(), e.getY());
+            if(statusListener != null){
+                statusListener.updateStatus(e.getX(), e.getY(), getShapeCounts());
+            }
         }
 
         @Override
@@ -57,7 +58,9 @@ public class ShapePanel extends JPanel {
                 currentShape.setY2(e.getY());
                 repaint();
             }
-            setLabelText(e.getX(), e.getY());
+            if(statusListener != null){
+                statusListener.updateStatus(e.getX(), e.getY(), getShapeCounts());
+            }
         }
 
         @Override
@@ -69,12 +72,16 @@ public class ShapePanel extends JPanel {
                currentShape = null;
                repaint();
            }
-            setLabelText(e.getX(), e.getY());
+            if(statusListener != null){
+                statusListener.updateStatus(e.getX(), e.getY(), getShapeCounts());
+            }
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            setLabelText(e.getX(), e.getY());
+            if(statusListener != null){
+                statusListener.updateStatus(e.getX(), e.getY(), getShapeCounts());
+            }
         }
     }
 
@@ -129,12 +136,6 @@ public class ShapePanel extends JPanel {
                 lineCount, squareCount, ovalCount, triangleCount);
     }
 
-    private void setLabelText(int x,int y){
-        String textToShow = String.format("Mouse: (%d, %d) | %s",
-                x, y, getShapeCounts());
-        this.statusLabel.setText(textToShow);
-    }
-
     public void setShapeType(int selectedShapeIndex) {
         this.shapeType = selectedShapeIndex;
     }
@@ -145,6 +146,14 @@ public class ShapePanel extends JPanel {
 
     public void setIsFilled(boolean shapeIsFilled){
         this.shapeIsFilled = shapeIsFilled;
+    }
+
+    public void setMouseStatusListener(MouseStatusListener listener){
+        this.statusListener = listener;
+    }
+
+    public interface MouseStatusListener {
+        void updateStatus(int x, int y, String shapeCounts);
     }
 
 }

@@ -10,6 +10,7 @@ public class ShapeFrame extends JFrame {
     private JButton undoButton, clearButton;
     private JRadioButton isFilledRadioButton, isNotFilledRadioButton;
     private ButtonGroup filledButtonGroup;
+    private JLabel statusLabel;
 
     public ShapeFrame(){
         super("Shape UI");
@@ -19,13 +20,14 @@ public class ShapeFrame extends JFrame {
         this.setVisible(true);
         this.setLayout(new BorderLayout());
 
-        JLabel statusLabel = new JLabel();
+        statusLabel = new JLabel();
         JPanel bottomPanel = new JPanel();
 
-        shapePanel = new ShapePanel(statusLabel);
-        undoButton = new JButton("Undo"); // Add listener later
-        clearButton = new JButton("Clear"); // Add listener later
+        shapePanel = new ShapePanel();
+        undoButton = new JButton("Undo");
+        clearButton = new JButton("Clear");
         filledButtonGroup = new ButtonGroup();
+        statusLabel = new JLabel("Mouse: (0, 0) | " + shapePanel.getShapeCounts());
 
         isFilledRadioButton = new JRadioButton("Filled");
         isNotFilledRadioButton = new JRadioButton("Not Filled");
@@ -62,6 +64,13 @@ public class ShapeFrame extends JFrame {
             }
         });
 
+        shapePanel.setMouseStatusListener(new ShapePanel.MouseStatusListener() {
+            @Override
+            public void updateStatus(int x, int y, String shapeCounts) {
+                statusLabel.setText(String.format("Mouse: (%d, %d) | %s", x, y, shapeCounts));
+            }
+        });
+
         colorListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,7 +102,7 @@ public class ShapeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 shapePanel.clearLastShape();
-                shapePanel.getShapeCounts();
+//                statusLabel.setText(shapePanel.getShapeCounts());
             }
         });
 
@@ -101,7 +110,6 @@ public class ShapeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 shapePanel.clearPanel();
-                shapePanel.getShapeCounts();
             }
         });
 
