@@ -15,6 +15,7 @@ public class ShapePanel extends JPanel {
     private boolean shapeIsFilled;
     private int width;
     private int height;
+    private int shapeCount;
 
     public ShapePanel(JLabel statusLabel){
         setBackground(Color.WHITE);
@@ -25,6 +26,7 @@ public class ShapePanel extends JPanel {
         setIsFilled(true);
         width = 0;
         height = 0;
+        shapeCount = 0;
 
         addMouseListener(new MouseHandler());
         addMouseMotionListener(new MouseHandler());
@@ -59,7 +61,8 @@ public class ShapePanel extends JPanel {
             width = Math.abs(currentShape.getX2() - currentShape.getX1());
             height = Math.abs(currentShape.getY2() - currentShape.getY1());
 
-            setLabelText("X: " + e.getX() + " Y: " + e.getY() + "Width: " + width + " Height: " + height);
+            setLabelText("X: " + e.getX() + " Y: " + e.getY() + " Width: " + width + " Height: " + height +
+                    " Count: " + shapeCount);
         }
 
         @Override
@@ -68,6 +71,7 @@ public class ShapePanel extends JPanel {
                currentShape.setX2(e.getX());
                currentShape.setY2(e.getY());
                shapes.add(currentShape);
+               shapeCount++;
                currentShape = null;
                repaint();
            }
@@ -75,7 +79,8 @@ public class ShapePanel extends JPanel {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            setLabelText("X: " + e.getX() + " Y: " + e.getY());
+            setLabelText("X: " + e.getX() + " Y: " + e.getY() + " Width: " + width + " Height: " + height +
+                    " Count: " + shapeCount);
         }
     }
 
@@ -95,6 +100,7 @@ public class ShapePanel extends JPanel {
     public void clearLastShape() {
         if(!shapes.isEmpty()){
             shapes.remove(shapes.size() - 1);
+            shapeCount--;
             repaint();
         }
     }
@@ -102,6 +108,7 @@ public class ShapePanel extends JPanel {
     public void clearPanel() {
         if(!shapes.isEmpty()){
             shapes.clear();
+            shapeCount = 0;
             repaint();
         }
     }
