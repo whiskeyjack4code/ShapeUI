@@ -10,8 +10,6 @@ public class ShapePanel extends JPanel {
     private Color shapeColor;
     private MyShape currentShape;
     private MouseStatusListener statusListener;
-    private int lastMouseX;
-    private int lastMouseY;
 
     private int shapeType;
     private boolean shapeIsFilled;
@@ -27,8 +25,6 @@ public class ShapePanel extends JPanel {
         squareCount = 0;
         ovalCount = 0;
         triangleCount = 0;
-        lastMouseX = 0;
-        lastMouseY = 0;
 
         addMouseListener(new MouseHandler());
         addMouseMotionListener(new MouseHandler());
@@ -39,14 +35,12 @@ public class ShapePanel extends JPanel {
         public void mousePressed(MouseEvent e) {
             int x1 = e.getX();
             int y1 = e.getY();
-            int x2 = x1;
-            int y2 = y1;
 
             switch (shapeType){
-                case 0: currentShape = new Line(x1, y1, x2, y2, shapeColor); lineCount++; break;
-                case 1: currentShape = new Square(x1, y1, x2, y2, shapeColor, shapeIsFilled); squareCount++; break;
-                case 2: currentShape = new Oval(x1, y1, x2, y2, shapeColor, shapeIsFilled); ovalCount++; break;
-                case 3: currentShape = new Triangle(x1, y1, x2, y2, shapeColor, shapeIsFilled); triangleCount++; break;
+                case 0: currentShape = new Line(x1, y1, x1, y1, shapeColor); lineCount++; break;
+                case 1: currentShape = new Square(x1, y1, x1, y1, shapeColor, shapeIsFilled); squareCount++; break;
+                case 2: currentShape = new Oval(x1, y1, x1, y1, shapeColor, shapeIsFilled); ovalCount++; break;
+                case 3: currentShape = new Triangle(x1, y1, x1, y1, shapeColor, shapeIsFilled); triangleCount++; break;
                 default: currentShape = null;
             }
             repaint();
@@ -117,6 +111,10 @@ public class ShapePanel extends JPanel {
                 triangleCount--;
             }
             repaint();
+
+            if(statusListener != null) {
+                statusListener.updateStatus(-1, -1, getShapeCounts());
+            }
         }
     }
 
@@ -125,6 +123,10 @@ public class ShapePanel extends JPanel {
             shapes.clear();
             resetShapeCounters();
             repaint();
+
+            if(statusListener != null) {
+                statusListener.updateStatus(-1, -1, getShapeCounts());
+            }
         }
     }
 

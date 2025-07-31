@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,7 @@ public class ShapeFrame extends JFrame {
     private JButton undoButton, clearButton;
     private JRadioButton isFilledRadioButton, isNotFilledRadioButton;
     private ButtonGroup filledButtonGroup;
-    private JLabel statusLabel;
+    private JLabel coordLabel, countLabel;
 
     public ShapeFrame(){
         super("Shape UI");
@@ -20,14 +21,19 @@ public class ShapeFrame extends JFrame {
         this.setVisible(true);
         this.setLayout(new BorderLayout());
 
-        statusLabel = new JLabel();
+        coordLabel = new JLabel("Mouse: (0, 0");
+        countLabel = new JLabel(shapePanel.getShapeCounts());
+
+        JPanel statusPanel = new JPanel(new BorderLayout());
+        statusPanel.add(coordLabel, BorderLayout.WEST);
+        statusPanel.add(countLabel, BorderLayout.EAST);
+
         JPanel bottomPanel = new JPanel();
 
         shapePanel = new ShapePanel();
         undoButton = new JButton("Undo");
         clearButton = new JButton("Clear");
         filledButtonGroup = new ButtonGroup();
-        statusLabel = new JLabel("Mouse: (0, 0) | " + shapePanel.getShapeCounts());
 
         isFilledRadioButton = new JRadioButton("Filled");
         isNotFilledRadioButton = new JRadioButton("Not Filled");
@@ -67,7 +73,8 @@ public class ShapeFrame extends JFrame {
         shapePanel.setMouseStatusListener(new ShapePanel.MouseStatusListener() {
             @Override
             public void updateStatus(int x, int y, String shapeCounts) {
-                statusLabel.setText(String.format("Mouse: (%d, %d) | %s", x, y, shapeCounts));
+                coordLabel.setText(String.format("Mouse: (%d, %d) | %s", x, y));
+                countLabel.setText(shapeCounts);
             }
         });
 
@@ -102,6 +109,7 @@ public class ShapeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 shapePanel.clearLastShape();
+
             }
         });
 
@@ -117,6 +125,6 @@ public class ShapeFrame extends JFrame {
 
         this.add(bottomPanel, BorderLayout.SOUTH);
         this.add(shapePanel, BorderLayout.CENTER);
-        this.add(statusLabel, BorderLayout.NORTH);
+        this.add(statusPanel, BorderLayout.NORTH);
     }
 }
