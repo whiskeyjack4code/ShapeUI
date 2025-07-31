@@ -3,12 +3,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class ShapeFrame extends JFrame {
 
     private Color[] colors = {Color.BLUE, Color.RED, Color.GREEN, Color.PINK, Color.ORANGE, Color.CYAN, Color.BLACK};
     private ShapePanel shapePanel;
-    private JButton undoButton, clearButton;
+    private JButton undoButton, clearButton, saveButton;
     private JRadioButton isFilledRadioButton, isNotFilledRadioButton;
     private ButtonGroup filledButtonGroup;
     private JLabel coordLabel, countLabel;
@@ -16,7 +17,7 @@ public class ShapeFrame extends JFrame {
     public ShapeFrame(){
         super("Shape UI");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600,600);
+        this.setSize(800,800);
         this.setLayout(new BorderLayout());
 
         shapePanel = new ShapePanel();
@@ -31,6 +32,7 @@ public class ShapeFrame extends JFrame {
 
         undoButton = new JButton("Undo");
         clearButton = new JButton("Clear");
+        saveButton = new JButton("Save");
 
         isFilledRadioButton = new JRadioButton("Filled");
         isNotFilledRadioButton = new JRadioButton("Not Filled");
@@ -50,6 +52,19 @@ public class ShapeFrame extends JFrame {
 
         isFilledRadioButton.addActionListener(e -> shapePanel.setIsFilled(true));
         isNotFilledRadioButton.addActionListener(e -> shapePanel.setIsFilled(false));
+
+        saveButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Drawing As Image");
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                if (!selectedFile.getName().toLowerCase().endsWith(".png")) {
+                    selectedFile = new File(selectedFile.getAbsolutePath() + ".png");
+                }
+                shapePanel.saveImage(selectedFile);
+            }
+        });
 
         colorListComboBox.addActionListener(e -> {
             int selectedColorIndex = colorListComboBox.getSelectedIndex();
@@ -81,6 +96,7 @@ public class ShapeFrame extends JFrame {
             }
         });
 
+        bottomPanel.add(saveButton);
         bottomPanel.add(undoButton);
         bottomPanel.add(clearButton);
         bottomPanel.add(isFilledRadioButton);

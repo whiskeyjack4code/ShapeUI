@@ -1,7 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,6 +32,19 @@ public class ShapePanel extends JPanel {
 
         addMouseListener(new MouseHandler());
         addMouseMotionListener(new MouseHandler());
+    }
+
+    public void saveImage(File file) {
+        BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = image.createGraphics();
+        paintAll(g2); // Paints the panel onto the image
+        g2.dispose();
+
+        try {
+            ImageIO.write(image, "png", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private class MouseHandler extends MouseAdapter{
