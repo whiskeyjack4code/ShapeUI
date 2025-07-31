@@ -10,6 +10,8 @@ public class ShapePanel extends JPanel {
     private Color shapeColor;
     private MyShape currentShape;
     private MouseStatusListener statusListener;
+    private int lastMouseX;
+    private int lastMouseY;
 
     private int shapeType;
     private boolean shapeIsFilled;
@@ -25,6 +27,8 @@ public class ShapePanel extends JPanel {
         squareCount = 0;
         ovalCount = 0;
         triangleCount = 0;
+        lastMouseX = 0;
+        lastMouseY = 0;
 
         addMouseListener(new MouseHandler());
         addMouseMotionListener(new MouseHandler());

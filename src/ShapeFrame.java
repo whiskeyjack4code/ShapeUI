@@ -102,7 +102,6 @@ public class ShapeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 shapePanel.clearLastShape();
-//                statusLabel.setText(shapePanel.getShapeCounts());
             }
         });
 
