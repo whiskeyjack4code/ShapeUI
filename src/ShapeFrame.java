@@ -48,7 +48,6 @@ public class ShapeFrame extends JFrame {
         colorListComboBox.setSelectedIndex(0);
         shapeListComboBox.setSelectedIndex(0);
 
-        // Action listeners
         isFilledRadioButton.addActionListener(e -> shapePanel.setIsFilled(true));
         isNotFilledRadioButton.addActionListener(e -> shapePanel.setIsFilled(false));
 
@@ -79,7 +78,6 @@ public class ShapeFrame extends JFrame {
             countLabel.setText(counts);
         });
 
-        // Add components to panels
         bottomPanel.add(undoButton);
         bottomPanel.add(clearButton);
         bottomPanel.add(isFilledRadioButton);
@@ -87,12 +85,10 @@ public class ShapeFrame extends JFrame {
         bottomPanel.add(colorListComboBox);
         bottomPanel.add(shapeListComboBox);
 
-        // Add to frame
         this.add(statusPanel, BorderLayout.NORTH);
         this.add(shapePanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-        // ✅ Only now make it visible
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }

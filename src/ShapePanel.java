@@ -113,7 +113,7 @@ public class ShapePanel extends JPanel {
             repaint();
 
             if(statusListener != null) {
-                statusListener.updateStatus(-1, -1, getShapeCounts());
+                statusListener.updateStatus(0, 0, getShapeCounts());
             }
         }
     }
@@ -125,7 +125,7 @@ public class ShapePanel extends JPanel {
             repaint();
 
             if(statusListener != null) {
-                statusListener.updateStatus(-1, -1, getShapeCounts());
+                statusListener.updateStatus(0, 0, getShapeCounts());
             }
         }
     }
