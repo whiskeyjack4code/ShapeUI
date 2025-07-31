@@ -13,20 +13,19 @@ public class ShapePanel extends JPanel {
 
     private int shapeType;
     private boolean shapeIsFilled;
-    private int width;
-    private int height;
-    private int shapeCount;
+    private int lineCount, squareCount, ovalCount, triangleCount;
 
     public ShapePanel(JLabel statusLabel){
         setBackground(Color.WHITE);
+        setIsFilled(true);
         this.statusLabel = statusLabel;
         this.shapeType = 0;
         this.shapeColor = Color.BLACK;
         currentShape = null;
-        setIsFilled(true);
-        width = 0;
-        height = 0;
-        shapeCount = 0;
+        lineCount = 0;
+        squareCount = 0;
+        ovalCount = 0;
+        triangleCount = 0;
 
         addMouseListener(new MouseHandler());
         addMouseMotionListener(new MouseHandler());
@@ -41,14 +40,14 @@ public class ShapePanel extends JPanel {
             int y2 = y1;
 
             switch (shapeType){
-                case 0: currentShape = new Line(x1, y1, x2, y2, shapeColor); break;
-                case 1: currentShape = new Square(x1, y1, x2, y2, shapeColor, shapeIsFilled); break;
-                case 2: currentShape = new Oval(x1, y1, x2, y2, shapeColor, shapeIsFilled); break;
-                case 3: currentShape = new Triangle(x1, y1, x2, y2, shapeColor, shapeIsFilled); break;
+                case 0: currentShape = new Line(x1, y1, x2, y2, shapeColor); lineCount++; break;
+                case 1: currentShape = new Square(x1, y1, x2, y2, shapeColor, shapeIsFilled); squareCount++; break;
+                case 2: currentShape = new Oval(x1, y1, x2, y2, shapeColor, shapeIsFilled); ovalCount++; break;
+                case 3: currentShape = new Triangle(x1, y1, x2, y2, shapeColor, shapeIsFilled); triangleCount++; break;
                 default: currentShape = null;
             }
-
             repaint();
+            setLabelText(e.getX(), e.getY());
         }
 
         @Override
@@ -58,11 +57,7 @@ public class ShapePanel extends JPanel {
                 currentShape.setY2(e.getY());
                 repaint();
             }
-            width = Math.abs(currentShape.getX2() - currentShape.getX1());
-            height = Math.abs(currentShape.getY2() - currentShape.getY1());
-
-            setLabelText("X: " + e.getX() + " Y: " + e.getY() + " Width: " + width + " Height: " + height +
-                    " Count: " + shapeCount);
+            setLabelText(e.getX(), e.getY());
         }
 
         @Override
@@ -71,16 +66,15 @@ public class ShapePanel extends JPanel {
                currentShape.setX2(e.getX());
                currentShape.setY2(e.getY());
                shapes.add(currentShape);
-               shapeCount++;
                currentShape = null;
                repaint();
            }
+            setLabelText(e.getX(), e.getY());
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            setLabelText("X: " + e.getX() + " Y: " + e.getY() + " Width: " + width + " Height: " + height +
-                    " Count: " + shapeCount);
+            setLabelText(e.getX(), e.getY());
         }
     }
 
@@ -99,8 +93,18 @@ public class ShapePanel extends JPanel {
 
     public void clearLastShape() {
         if(!shapes.isEmpty()){
+            MyShape shapeRemoved = shapes.get(shapes.size() - 1);
             shapes.remove(shapes.size() - 1);
-            shapeCount--;
+
+            if(shapeRemoved instanceof Line){
+                lineCount--;
+            }else if(shapeRemoved instanceof Square){
+                squareCount--;
+            }else if(shapeRemoved instanceof Oval){
+                ovalCount--;
+            }else if(shapeRemoved instanceof Triangle){
+                triangleCount--;
+            }
             repaint();
         }
     }
@@ -108,13 +112,27 @@ public class ShapePanel extends JPanel {
     public void clearPanel() {
         if(!shapes.isEmpty()){
             shapes.clear();
-            shapeCount = 0;
+            resetShapeCounters();
             repaint();
         }
     }
 
-    public void setLabelText(String value){
-        this.statusLabel.setText(value);
+    private void resetShapeCounters(){
+        lineCount = 0;
+        squareCount = 0;
+        ovalCount = 0;
+        triangleCount = 0;
+    }
+
+    public String getShapeCounts(){
+        return String.format("Lines: %d, Squares: %d, Ovals: %d, Triangles: %d,",
+                lineCount, squareCount, ovalCount, triangleCount);
+    }
+
+    private void setLabelText(int x,int y){
+        String textToShow = String.format("Mouse: (%d, %d) | %s,",
+                x, y, getShapeCounts());
+        this.statusLabel.setText(textToShow);
     }
 
     public void setShapeType(int selectedShapeIndex) {

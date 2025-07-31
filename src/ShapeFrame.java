@@ -93,6 +93,7 @@ public class ShapeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 shapePanel.clearLastShape();
+                shapePanel.getShapeCounts();
             }
         });
 
@@ -100,6 +101,7 @@ public class ShapeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 shapePanel.clearPanel();
+                shapePanel.getShapeCounts();
             }
         });
 
