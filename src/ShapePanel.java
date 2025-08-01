@@ -37,7 +37,7 @@ public class ShapePanel extends JPanel {
     public void saveImage(File file) {
         BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = image.createGraphics();
-        paintAll(g2); // Paints the panel onto the image
+        paintAll(g2);
         g2.dispose();
 
         try {
