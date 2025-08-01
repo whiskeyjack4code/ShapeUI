@@ -174,9 +174,4 @@ public class ShapePanel extends JPanel {
     public void setMouseStatusListener(MouseStatusListener listener){
         this.statusListener = listener;
     }
-
-    public interface MouseStatusListener {
-        void updateStatus(int x, int y, String shapeCounts);
-    }
-
 }

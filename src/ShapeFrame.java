@@ -88,7 +88,7 @@ public class ShapeFrame extends JFrame {
         undoButton.addActionListener(e -> shapePanel.clearLastShape());
         clearButton.addActionListener(e -> shapePanel.clearPanel());
 
-        shapePanel.setMouseStatusListener(new ShapePanel.MouseStatusListener() {
+        shapePanel.setMouseStatusListener(new MouseStatusListener() {
             @Override
             public void updateStatus(int x, int y, String shapeCounts) {
                 coordLabel.setText(String.format("Mouse: (%d, %d)", x, y));
